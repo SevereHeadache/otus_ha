@@ -1,0 +1,11 @@
+{
+    "name": "severe_headache/otus_ha",
+    "autoload": {
+        "psr-4": {
+            "SevereHeadache\\OtusHa\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.2.0"
+    }
+}

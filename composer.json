@@ -7,6 +7,8 @@
     },
     "require": {
         "php": ">=8.2.0",
-        "klein/klein": "^2.1"
+        "klein/klein": "^2.1",
+        "davedevelopment/phpmig": "^1.7",
+        "vlucas/phpdotenv": "^5.5"
     }
 }

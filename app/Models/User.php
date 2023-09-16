@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
+use Ramsey\Uuid\Uuid;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasFactory;
+    use Authenticatable, Authorizable, HasFactory, HasUuids;
 
     public string $id;
-    public string $firstName;
-    public string $secondName;
+    public string $first_name;
+    public string $second_name;
     public int    $age;
     public string $birthdate;
     public string $biography;
@@ -28,12 +30,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $fillable = [
         'id',
-        'firstName',
-        'secondName',
+        'first_name',
+        'second_name',
         'age',
         'birthdate',
         'biography',
         'city',
+        'password'
     ];
 
     /**
@@ -44,4 +47,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    // /**
+    //  * Generate a new UUID for the model.
+    //  */
+    // public function newUniqueId(): string
+    // {
+    //     return (string) Uuid::uuid4();
+    // }
+
+    // public function uniqueIds(): array
+    // {
+    //     return ['id'];
+    // }
 }

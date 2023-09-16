@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->id();
-            $table->string('firstName'); 
-            $table->string('secondName'); 
+        Schema::create('users', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('first_name'); 
+            $table->string('second_name'); 
+            $table->string('password');
             $table->integer('age'); 
             $table->string('birthdate'); 
             $table->string('biography'); 

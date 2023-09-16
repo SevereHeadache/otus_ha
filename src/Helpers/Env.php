@@ -35,10 +35,12 @@ class Env
 
     protected static function loadEnv()
     {
-        if (defined(ENV_FILE) && is_file(ENV_FILE)) {
+        if (is_file(ENV_FILE)) {
             $env = file_get_contents(ENV_FILE);
             foreach(explode(PHP_EOL, $env) as $line) {
-                \putenv($line);
+                if (!str_contains($line, '#')) {
+                    \putenv($line);
+                }
             }
         }
     }

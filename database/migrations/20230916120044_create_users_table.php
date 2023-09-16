@@ -9,14 +9,15 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        $sql = "CREATE TABLE `users` (
-            `id` varchar(36),
-            `firstName` varchar(60),
-            `secondName` varchar(60),
-            `age` int(3),
-            `birthdate` timestamp,
-            `biography` varchar(250),
-            `city` varchar(60)
+        $sql = "CREATE TABLE users (
+            id varchar(36),
+            password varchar(100), 
+            first_name varchar(60),
+            second_name varchar(60),
+            age int,
+            birthdate timestamp,
+            biography varchar(250),
+            city varchar(60)
         )";
         $container = $this->getContainer(); 
         $container['db']->query($sql);

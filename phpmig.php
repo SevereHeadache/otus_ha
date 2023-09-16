@@ -6,7 +6,18 @@ $container = new ArrayObject();
 $db_config = require __DIR__.'/config/database.php';
 
 $container['db'] = (function () use ($db_config) {
-    $dbh = new PDO(sprintf('mysql:dbname=%s;host=%s', $db_config['dbname'], $db_config['host']), $db_config['usermane'], $db_config['password']);
+    $dbh = $db_config['dbtype']  === 'mysql'
+    ? new PDO(sprintf(
+        'mysql:dbname=%s;host=%s',
+        $db_config['dbname'],
+        $db_config['host']
+    ), $db_config['usermane'], $db_config['password'])
+    : $dbh = new PDO(sprintf(
+        'pgsql:dbname=%s;host=%s;password=%s',
+        $db_config['dbname'],
+        $db_config['host'],
+        $db_config['password']
+    ), $db_config['usermane'], $db_config['password']);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
 })();

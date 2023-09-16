@@ -9,11 +9,14 @@
         "php": ">=8.2.0",
         "klein/klein": "^2.1",
         "davedevelopment/phpmig": "^1.7",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "ramsey/uuid": "^4.7",
+        "nesbot/carbon": "^2.70"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",
         "codeception/module-phpbrowser": "*",
-        "codeception/module-asserts": "*"
+        "codeception/module-asserts": "*",
+        "fakerphp/faker": "^1.23"
     }
 }

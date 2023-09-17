@@ -7,9 +7,11 @@ services:
             - .:/var/www/html
             - ./.docker/log/nginx:/var/log/nginx
         ports:
-            - 8888:80
+            - ${PORT}:80
         restart: always
         depends_on:
+            - php
+        links:
             - php
     php:
         build: .docker
@@ -18,6 +20,8 @@ services:
             - ./.docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
             - ./.docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - .:/var/www/html
+        links:
+            - db
     composer:
         image: composer
         volumes:
@@ -30,7 +34,5 @@ services:
             - POSTGRES_DB=${DB_NAME}
             - POSTGRES_USER=${DB_USER}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
-        ports:
-            - ${DB_PORT}:5432
         volumes:
             - ./.docker/conf/postgres/:/docker-entrypoint-initdb.d/

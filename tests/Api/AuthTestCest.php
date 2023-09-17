@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use DateTime;
 use Ramsey\Uuid\Uuid;
 use SevereHeadache\OtusHa\Models\User;
+use SevereHeadache\OtusHa\Repositories\Database\TokenRepository;
 use SevereHeadache\OtusHa\Repositories\Database\UserRepository;
 use Tests\Support\ApiTester;
 use Tests\Support\Helper\Traits\DatabaseTransactions;
@@ -62,6 +63,37 @@ class AuthTestCest
     public function try_to_login_success(ApiTester $I)
     {
         $user = $this->createUser();
+
+        $I->sendPost('/login', [
+            'id' => $user->id,
+            'password' =>  'password',
+          ]);
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('token');
+    }
+
+    public function try_to_login_success_with_exists_token(ApiTester $I)
+    {
+        $user = $this->createUser();
+        $tokenRepository = new TokenRepository();
+        $tokenRepository->createForUser($user);
+        $I->sendPost('/login', [
+            'id' => $user->id,
+            'password' =>  'password',
+          ]);
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('token');
+    }
+
+    public function try_to_login_success_with_exists_expired_token(ApiTester $I)
+    {
+        $user = $this->createUser();
+        $tokenRepository = new TokenRepository();
+        $token = $tokenRepository->createForUser($user);
+        $token->expiriedAt = Carbon::now()->addDays(-30);
+        $tokenRepository->store($token);
 
         $I->sendPost('/login', [
             'id' => $user->id,

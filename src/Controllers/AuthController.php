@@ -7,6 +7,7 @@ use Klein\Response;
 use Klein\Request;
 use SevereHeadache\OtusHa\Controllers\Exceptions\IncorectRequestException;
 use SevereHeadache\OtusHa\Models\User;
+use SevereHeadache\OtusHa\Repositories\Database\TokenRepository;
 use SevereHeadache\OtusHa\Repositories\Database\UserRepository;
 use SevereHeadache\OtusHa\Repositories\Exceptions\RepositoryException;
 
@@ -39,9 +40,19 @@ class AuthController
             ]);
         }
 
+        $tokenRepository = new TokenRepository();
+        if (!($token = $tokenRepository->getByUserId($user->id)) || Carbon::parse($token->expiriedAt) < Carbon::now()){
+            if ($token) {
+                $token->expiriedAt = $tokenRepository->makeExspiriedAt();
+                $token = $tokenRepository->store($token);
+            } else {
+                $token = $tokenRepository->createForUser($user);
+            }
+        }
+
 
         return $response->json([
-            'token' => $user->id,
+            'token' => $token->token,
         ]);
     }
 

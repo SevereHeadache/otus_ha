@@ -18,6 +18,7 @@ class AuthTestCest
 
     public function _before(ApiTester $I)
     {
+        $I->haveHttpHeader('Content-Type', 'application/json');
     }
 
     protected function createUser()

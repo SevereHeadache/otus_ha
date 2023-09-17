@@ -16,6 +16,9 @@ class AuthController
     public function login(Request $request, Response $response)
     {
         $attributes = $request->paramsPost();
+        if ($attributes->isEmpty()) {
+            $attributes = json_decode($request->body(), true) ?: [];
+        }
         if (empty($attributes['id'])){
             throw new IncorectRequestException('Request must contain id', 400);
         }
@@ -59,6 +62,9 @@ class AuthController
     public function register(Request $request, Response $response)
     {
         $attributes = $request->paramsPost();
+        if ($attributes->isEmpty()) {
+            $attributes = json_decode($request->body(), true) ?: [];
+        }
         if (empty($attributes)){
             throw new IncorectRequestException('Request must contain user attributes', 400);
         }

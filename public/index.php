@@ -35,4 +35,8 @@ $klein->respond('POST', '/register', function (...$args) use ($callController) {
     return $callController('SevereHeadache\\OtusHa\\Controllers\\AuthController::register', ...$args);
 });
 
+$klein->respond('GET', '/user/get/[:id]', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\UserController::get', ...$args);
+});
+
 $klein->dispatch();

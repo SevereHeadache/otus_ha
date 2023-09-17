@@ -43,7 +43,7 @@ class TokenRepository extends AbstractRepository
         $request = $this->getById($id);
         $token = $request->fetchObject(Token::class);
         if (!($token instanceof Token)) {
-            throw new RepositoryException('Failed to find user with id: '. $id);
+            throw new RepositoryException('Failed to find token item with token: '. $id);
         }
 
         return $this->parseValues($token);

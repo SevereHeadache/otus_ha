@@ -8,13 +8,31 @@ $klein = new \Klein\Klein();
  * @todo Make controllers factory
  */
 $callController = function ($controller, ...$args) {
-    [$class, $method] = explode('::', $controller);
-    $controllerInstance = new $class();
-    return $controllerInstance->$method(...$args);
+    try {
+        [$class, $method] = explode('::', $controller);
+        $controllerInstance = new $class();
+        return $controllerInstance->$method(...$args);
+    } catch (SevereHeadache\OtusHa\Controllers\Exceptions\JsonException $e) {
+        return $args[1]->json($e->toArray());
+    } catch (SevereHeadache\OtusHa\Repositories\Exceptions\RepositoryException $e) {
+        return $args[1]->json([
+            'code' => 500,
+            'message' => $e->getMessage(),
+        ]);
+    } catch (Throwable $e) {
+        return $args[1]->json([
+            'code' => 500,
+            'message' => 'Unspecified server error'
+        ]);
+    }
 };  
 
-$klein->respond('GET', '/login', function (...$args) use ($callController) {
-    return $callController('SevereHeadache\\OtusHa\\Controllers\\LoginController::login', ...$args);
+$klein->respond('POST', '/login', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\AuthController::login', ...$args);
+});
+
+$klein->respond('POST', '/register', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\AuthController::register', ...$args);
 });
 
 $klein->dispatch();

@@ -10,7 +10,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         $sql = "CREATE TABLE users (
-            id varchar(36),
+            id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
             password varchar(100), 
             first_name varchar(60),
             second_name varchar(60),
@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        $sql = "DROP TABLE `users`";
+        $sql = "DROP TABLE users";
         $container = $this->getContainer(); 
         $container['db']->query($sql);
     }

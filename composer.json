@@ -17,6 +17,7 @@
         "codeception/codeception": "^5.0",
         "codeception/module-phpbrowser": "*",
         "codeception/module-asserts": "*",
-        "fakerphp/faker": "^1.23"
+        "fakerphp/faker": "^1.23",
+        "codeception/module-rest": "^3.3"
     }
 }

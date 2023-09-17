@@ -11,6 +11,15 @@
             "port": 9003
         },
         {
+            "name": "Listen for XDebug on Docker",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/var/www/html/": "${workspaceFolder}"
+            }
+        },
+        {
             "name": "Launch currently open script",
             "type": "php",
             "request": "launch",

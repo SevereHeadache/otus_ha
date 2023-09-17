@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "69d7ba7e39d88808527864e95626ed97",
+    "content-hash": "97c059203b304cb64dcc933075bfe8bb",
     "packages": [
         {
             "name": "brick/math",
@@ -193,25 +193,25 @@
         },
         {
             "name": "klein/klein",
-            "version": "v2.1.2",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/klein/klein.php.git",
-                "reference": "6549676cc831b9417332b3d9485c64bbf7bac728"
+                "url": "https://github.com/ZemEr1001/klein.php.git",
+                "reference": "9aa3131a1c7ff2c3ec156ce43d5cb5f1e0b8e80d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/klein/klein.php/zipball/6549676cc831b9417332b3d9485c64bbf7bac728",
-                "reference": "6549676cc831b9417332b3d9485c64bbf7bac728",
+                "url": "https://api.github.com/repos/ZemEr1001/klein.php/zipball/9aa3131a1c7ff2c3ec156ce43d5cb5f1e0b8e80d",
+                "reference": "9aa3131a1c7ff2c3ec156ce43d5cb5f1e0b8e80d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": "^8.0"
             },
             "require-dev": {
-                "phpunit/php-code-coverage": "^2.2",
-                "phpunit/phpunit": "^4.8",
-                "squizlabs/php_codesniffer": "1.4.8"
+                "phpunit/php-code-coverage": "^9.2",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.7"
             },
             "type": "library",
             "autoload": {
@@ -219,7 +219,11 @@
                     "Klein\\": "src/Klein/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Klein\\Tests\\": "tests/Klein/Tests"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -246,10 +250,9 @@
                 "sinatra"
             ],
             "support": {
-                "issues": "https://github.com/klein/klein.php/issues",
-                "source": "https://github.com/klein/klein.php/tree/master"
+                "source": "https://github.com/ZemEr1001/klein.php/tree/v3.0.0"
             },
-            "time": "2017-02-01T23:08:58+00:00"
+            "time": "2023-09-17T10:52:21+00:00"
         },
         {
             "name": "nesbot/carbon",

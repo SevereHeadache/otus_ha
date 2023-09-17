@@ -15,11 +15,13 @@ $callController = function ($controller, ...$args) {
     } catch (SevereHeadache\OtusHa\Controllers\Exceptions\JsonException $e) {
         return $args[1]->json($e->toArray());
     } catch (SevereHeadache\OtusHa\Repositories\Exceptions\RepositoryException $e) {
+        SevereHeadache\OtusHa\Helpers\Logger::logError($e);
         return $args[1]->json([
             'code' => 500,
             'message' => $e->getMessage(),
         ]);
     } catch (Throwable $e) {
+        SevereHeadache\OtusHa\Helpers\Logger::logError($e);
         return $args[1]->json([
             'code' => 500,
             'message' => 'Unspecified server error'

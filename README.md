@@ -1,16 +1,16 @@
 # OTUS Highload Architect
 OTUS Highload Architect
 
-## Run project as php dev server
-
-```
-php -S localhost:8888 -t public
-```
-
-## Run project in composer
+## Run project in docker
 
 ```
 docker-compose up -d
+```
+
+### Run tests in docker
+
+```
+./vendor/bin/codecept run
 ```
 
 ## Use project with Postman

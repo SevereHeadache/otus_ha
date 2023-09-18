@@ -11,3 +11,8 @@ RUN apt-get update \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-install -j$(nproc) pgsql \
     && docker-php-ext-install -j$(nproc) pdo_pgsql
+
+ADD entrypoint.sh /etc/entrypoint.sh
+RUN ["chmod", "+x", "/etc/entrypoint.sh"]
+
+ENTRYPOINT [ "/etc/entrypoint.sh" ]

@@ -5,5 +5,5 @@ modules:
         - Asserts
         - REST:
             depends: PhpBrowser
-            url: http://localhost:8888/
+            url: web:80
             

@@ -19,7 +19,7 @@ class UserController
      */
     public function get(Request $request, Response $response)
     {
-        if(!($token = $request->headers()['AUTH_TOKEN'])){
+        if(!($token = $request->headers()['Auth-Token'])){
             throw new AuthenticationException('Not specified AUTH_TOKEN header');
         }
 

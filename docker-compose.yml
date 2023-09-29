@@ -38,3 +38,4 @@ services:
             - POSTGRES_PASSWORD=${DB_PASSWORD}
         volumes:
             - ./.docker/conf/postgres/:/docker-entrypoint-initdb.d/
+            - ./database/dumps/:/var/dumps/

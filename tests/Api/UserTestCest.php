@@ -18,6 +18,7 @@ class UserTestCest
 
     public function _before(ApiTester $I)
     {
+        $I->haveHttpHeader('Content-Type', 'application/json');
     }
 
     protected function createUser()
@@ -95,5 +96,37 @@ class UserTestCest
         $I->seeResponseCodeIsSuccessful();
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson(['message' => 'Incorrect request: Failed to find user with id: '.$uuid]);
+    }
+
+    public function try_to_search_user(ApiTester $I)
+    {
+        $user = $this->createUser();
+        $tokenRepository = new TokenRepository();
+        $token = $tokenRepository->createForUser($user);
+        $I->haveHttpHeader('AUTH_TOKEN', $token->token);
+        $I->sendGet(sprintf('/user/search?first_name=%s&last_name=%s', substr($user->firstName, 0, 3), substr($user->secondName, 0,3)));
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'id' => $user->id,
+            'firstName' => $user->firstName,
+            'secondName' => $user->secondName,
+            'age' => $user->age,
+            'birthdate' => $user->birthdate,
+            'biography' => $user->biography,
+            'city' => $user->city,
+        ]);
+    }
+
+    public function try_to_search_user_withou_query_params(ApiTester $I)
+    {
+        $user = $this->createUser();
+        $tokenRepository = new TokenRepository();
+        $token = $tokenRepository->createForUser($user);
+        $I->haveHttpHeader('AUTH_TOKEN', $token->token);
+        $I->sendGet('/user/search');
+        $I->seeResponseCodeIsSuccessful();
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson(['message' => 'Incorrect request: Request must contains "first_name" or "second_name" query params']);
     }
 }

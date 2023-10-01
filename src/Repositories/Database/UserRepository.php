@@ -3,6 +3,7 @@
 namespace SevereHeadache\OtusHa\Repositories\Database;
 
 use Carbon\Carbon;
+use LDAP\Result;
 use PDO;
 use SevereHeadache\OtusHa\Models\User;
 use SevereHeadache\OtusHa\Repositories\Exceptions\RepositoryException;
@@ -41,6 +42,36 @@ class UserRepository extends AbstractRepository
         }
 
         return $this->parseValues($user);
+    }
+
+
+    /**
+     * @todo make queryBuider
+     */
+    public function getAll(array $where): array 
+    {
+        $result = [];
+
+        $query = sprintf('SELECT * FROM %s', self::$tableName);
+        $params = [];
+        foreach($where as $i => $whereItem) {
+            if ($i == 0) {
+                $query .= ' WHERE ';
+            } else {
+                $query .= ' AND ';
+            }
+            list($column, $operator, $value) = $whereItem;
+            $paramName = ':'.$column;
+            $query .= sprintf('%s %s %s', $column, $operator, $paramName);
+            $params[$paramName] = $value;
+        }
+        $query .= ' ORDER BY id ASC';
+        $request = $this->getConnection()->prepare($query);
+        $request->execute($params);
+        $users = $request->fetchAll(PDO::FETCH_CLASS, User::class); 
+        $result = array_map([$this, 'parseValues'], $users);
+
+        return $result;
     }
 
     protected function parseValues(User $user)

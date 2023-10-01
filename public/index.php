@@ -41,4 +41,8 @@ $klein->respond('GET', '/user/get/[:id]', function (...$args) use ($callControll
     return $callController('SevereHeadache\\OtusHa\\Controllers\\UserController::get', ...$args);
 });
 
+$klein->respond('GET', '/user/search', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\UserController::search', ...$args);
+});
+
 $klein->dispatch();

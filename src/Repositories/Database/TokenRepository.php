@@ -40,7 +40,7 @@ class TokenRepository extends AbstractRepository
 
     public function get(string $id): Token
     {
-        $request = $this->getById($id);
+        $request = $this->getById($id, slave: true);
         $token = $request->fetchObject(Token::class);
         if (!($token instanceof Token)) {
             throw new RepositoryException('Failed to find token item with token: '. $id);

@@ -17,9 +17,9 @@ abstract class AbstractRepository
     protected static $idField = '';
     protected static $class = '';
 
-    protected function getById(string $id): PDOStatement
+    protected function getById(string $id, bool $slave = false): PDOStatement
     {
-        $request = $this->getConnection()->prepare(sprintf('SELECT * FROM %s WHERE %s = :id LIMIT 1;', static::$tableName, static::$idField));
+        $request = $this->getConnection($slave)->prepare(sprintf('SELECT * FROM %s WHERE %s = :id LIMIT 1;', static::$tableName, static::$idField));
         $request->execute([':id' => $id]);
 
         return $request;
@@ -91,9 +91,9 @@ abstract class AbstractRepository
 
     }
 
-    protected function getConnection(): PDO
+    protected function getConnection(bool $slave = false): PDO
     {
-        return DB::getConnection();
+        return DB::getConnection($slave);
     }
 
     protected function toSnakeCase(string $name): string

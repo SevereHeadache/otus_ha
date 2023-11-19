@@ -35,7 +35,7 @@ class UserRepository extends AbstractRepository
 
     public function get(string $id): User
     {
-        $request = $this->getById($id);
+        $request = $this->getById($id, slave: true);
         $user = $request->fetchObject(User::class);
         if (!($user instanceof User)) {
             throw new RepositoryException('Failed to find user with id: '. $id);
@@ -66,7 +66,7 @@ class UserRepository extends AbstractRepository
             $params[$paramName] = $value;
         }
         $query .= ' ORDER BY id ASC';
-        $request = $this->getConnection()->prepare($query);
+        $request = $this->getConnection(slave: true)->prepare($query);
         $request->execute($params);
         $users = $request->fetchAll(PDO::FETCH_CLASS, User::class); 
         $result = array_map([$this, 'parseValues'], $users);

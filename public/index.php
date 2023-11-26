@@ -45,4 +45,12 @@ $klein->respond('GET', '/user/search', function (...$args) use ($callController)
     return $callController('SevereHeadache\\OtusHa\\Controllers\\UserController::search', ...$args);
 });
 
+$klein->respond('PUT', '/friend/set/[:user_id]', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\FriendController::set', ...$args);
+});
+
+$klein->respond('PUT', '/friend/delete/[:user_id]', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\FriendController::delete', ...$args);
+});
+
 $klein->dispatch();

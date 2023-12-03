@@ -139,7 +139,8 @@ class FriendRepository extends AbstractRepository
         $params = $insertParams['params'];
 
         if ($this->getConnection()->prepare("INSERT INTO ".self::$tableName." ($filelds) VALUES ($values);")->execute($params)) {
-            return isset($friend->id) ? $this->get($friend->id) : $friend;
+            $id = $this->getConnection()->lastInsertId();
+            return $this->get($id);
         } else {
             throw new RepositoryException("Failed to create friend with attributes: \n". json_encode($friend, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }

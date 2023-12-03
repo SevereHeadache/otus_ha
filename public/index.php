@@ -53,4 +53,20 @@ $klein->respond('PUT', '/friend/delete/[:user_id]', function (...$args) use ($ca
     return $callController('SevereHeadache\\OtusHa\\Controllers\\FriendController::delete', ...$args);
 });
 
+$klein->respond('POST', '/post/create', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\PostController::create', ...$args);
+});
+
+$klein->respond('PUT', '/post/update', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\PostController::update', ...$args);
+});
+
+$klein->respond('PUT', '/post/delete/[:id]', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\PostController::delete', ...$args);
+});
+
+$klein->respond('GET', '/post/get/[:id]', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\PostController::get', ...$args);
+});
+
 $klein->dispatch();

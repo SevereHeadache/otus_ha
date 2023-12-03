@@ -141,7 +141,7 @@ abstract class AbstractRepository
         $params = $insertParams['params'];
 
         if ($this->getConnection()->prepare("INSERT INTO ".static::$tableName." ($filelds) VALUES ($values);")->execute($params)) {
-            $id = $this->getConnection()->lastInsertId();
+            $id = $model->{$model->getIdField()} ?: $this->getConnection()->lastInsertId();
             return $this->get($id);
         } else {
             throw new RepositoryException("Failed to create ".static::$class." with attributes: \n". json_encode($model, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

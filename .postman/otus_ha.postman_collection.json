@@ -2,12 +2,53 @@
 	"info": {
 		"_postman_id": "325e8ee8-0931-49b4-a59c-57cd476d2547",
 		"name": "otus_ha",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "15485188"
 	},
 	"item": [
 		{
 			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required field - user_id\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.user_id).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"User ID should be a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.user_id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"User ID should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"",
+							"pm.test(\"User ID is a unique identifier\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.user_id).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -20,81 +61,258 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://0.0.0.0:8888/register",
-					"protocol": "http",
-					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
-					],
-					"port": "8888",
-					"path": [
-						"register"
-					]
-				}
+				"url": "http://0.0.0.0:8888/register"
 			},
 			"response": []
 		},
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate response code and message\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(pm.response.json().code).to.equal(0);",
+							"    pm.expect(pm.response.json().message).to.equal(\"\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - code and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.code).to.exist;",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Code is a non-negative integer\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.code).to.be.a('number');",
+							"  pm.expect(responseData.code).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"The message is a string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.message).to.be.a('string');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"677373dc-1566-4717-825a-d0bf0af5efe4\",\n    \"password\": \"postman\"\n}",
+					"raw": "{\n    \"id\": \"9e4cfb3a-9de5-42e6-82d2-77d62f34a239\",\n    \"password\": \"Pa$$w0rd\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": {
-					"raw": "http://0.0.0.0:8888/login",
-					"protocol": "http",
-					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
-					],
-					"port": "8888",
-					"path": [
-						"login"
-					]
-				}
+				"url": "http://0.0.0.0:8888/login"
 			},
 			"response": []
 		},
 		{
 			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has code and message fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.code).to.exist;",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Code is a non-negative integer\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.code).to.be.a('number').and.to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
 					{
-						"key": "AUTH_TOKEN",
+						"key": "Auth-Token",
 						"value": "677373dc-1566-4717-825a-d0bf0af5efe4",
 						"type": "text"
 					}
 				],
-				"url": {
-					"raw": "http://0.0.0.0:8888/user/get/677373dc-1566-4717-825a-d0bf0af5efe4",
-					"protocol": "http",
-					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
-					],
-					"port": "8888",
-					"path": [
-						"user",
-						"get",
-						"677373dc-1566-4717-825a-d0bf0af5efe4"
-					]
-				}
+				"url": "http://0.0.0.0:8888/user/get/677373dc-1566-4717-825a-d0bf0af5efe4"
+			},
+			"response": []
+		},
+		{
+			"name": "Set Friend",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "b58681df-ed7f-4a84-a76b-de14a8ad5ad7",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "http://0.0.0.0:8888/friend/set/13bc1cec-b2cf-460e-ade3-cc4d7fc0e074"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Friend",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "b58681df-ed7f-4a84-a76b-de14a8ad5ad7",
+						"type": "text"
+					}
+				],
+				"url": "http://0.0.0.0:8888/friend/delete/13bc1cec-b2cf-460e-ade3-cc4d7fc0e074"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "b58681df-ed7f-4a84-a76b-de14a8ad5ad7",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://0.0.0.0:8888/post/create"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Post",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "b58681df-ed7f-4a84-a76b-de14a8ad5ad7",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"66526f93-8581-4cd6-bbfb-3156f12d2306\",\n    \"text\": \"test2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://0.0.0.0:8888/post/update"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Post",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "b58681df-ed7f-4a84-a76b-de14a8ad5ad7",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://0.0.0.0:8888/post/get/66526f93-8581-4cd6-bbfb-3156f12d2306"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "b58681df-ed7f-4a84-a76b-de14a8ad5ad7",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://0.0.0.0:8888/post/delete/66526f93-8581-4cd6-bbfb-3156f12d2306"
 			},
 			"response": []
 		}

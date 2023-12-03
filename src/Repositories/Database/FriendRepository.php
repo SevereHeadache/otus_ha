@@ -11,7 +11,7 @@ use SevereHeadache\OtusHa\Models\Friend;
  */
 class FriendRepository extends AbstractRepository
 {
-    protected static $tableName = 'posts';
+    protected static $tableName = 'friends';
     protected static $idField = 'id';
     protected static $class = Friend::class;
 

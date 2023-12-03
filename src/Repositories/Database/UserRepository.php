@@ -5,6 +5,7 @@ namespace SevereHeadache\OtusHa\Repositories\Database;
 use Carbon\Carbon;
 use LDAP\Result;
 use PDO;
+use SevereHeadache\OtusHa\Models\Model;
 use SevereHeadache\OtusHa\Models\User;
 use SevereHeadache\OtusHa\Repositories\Exceptions\RepositoryException;
 
@@ -74,7 +75,7 @@ class UserRepository extends AbstractRepository
         return $result;
     }
 
-    protected function parseValues(User $user)
+    protected function parseValues($user)
     {
         $user = $this->castObjectProperties($user);
 

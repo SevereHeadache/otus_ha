@@ -8,22 +8,22 @@ services:
             - ./.docker/log/nginx:/var/log/nginx
         ports:
             - ${PORT}:80
-        restart: always
+        restart: unless-stopped
         depends_on:
             - php
-        links:
-            - php
+        networks:
+            - internal
     php:
         build: .docker
-        restart: always
+        restart: unless-stopped
         volumes:
             - ./.docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
             - ./.docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - .:/var/www/html
         depends_on:
             - db
-        links:
-            - db
+        networks:
+            - internal
     composer:
         image: composer
         volumes:
@@ -31,7 +31,7 @@ services:
         command: install
     db:
         image: postgres:14.9
-        restart: always
+        restart: unless-stopped
         environment:
             - POSTGRES_DB=${DB_NAME}
             - POSTGRES_USER=${DB_USER}
@@ -39,3 +39,18 @@ services:
         volumes:
             - ./.docker/conf/postgres/:/docker-entrypoint-initdb.d/
             - ./database/dumps/:/var/dumps/
+        networks:
+            - internal
+    redis:
+        image: redis:7.2
+        restart: unless-stopped
+        environment:
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
+            - REDIS_PORT=${REDIS_PORT}
+        command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
+        networks:
+            - internal
+
+networks:
+  internal:
+    driver: bridge

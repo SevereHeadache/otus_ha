@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Klein\Response;
 use Klein\Request;
 use Ramsey\Uuid\Rfc4122\UuidV4;
+use SevereHeadache\OtusHa\Components\RedisClient;
 use SevereHeadache\OtusHa\Controllers\Exceptions\AuthenticationException;
 use SevereHeadache\OtusHa\Controllers\Exceptions\IncorectRequestException;
 use SevereHeadache\OtusHa\Models\Friend;
@@ -19,7 +20,6 @@ use SevereHeadache\OtusHa\Repositories\Exceptions\RepositoryException;
 
 class PostController
 {
-
     public function create(Request $request, Response $response)
     {
         $userId = $this->authenticate($request);
@@ -124,6 +124,25 @@ class PostController
             'text' => $post->text,
             'author_user_id' => $post->authorUserId,
         ]);
+    }
+
+    public function feed(Request $request, Response $response)
+    {
+        $userId = $this->authenticate($request);
+        $noCache = $request->param('noCache', false);
+
+        $redis = new RedisClient();
+        $key = "user-feed-$userId";
+        $feed = $redis->get($key);
+        if ($noCache || !$feed) {
+            $repository = new PostRepository();
+            $feed = $repository->getFeed($userId);
+            $redis->set($key, json_encode($feed), ['EX' => 1800]);
+        } else {
+            $feed = json_decode($feed, true);
+        }
+
+        return $response->json($feed);
     }
 
         /**

@@ -69,4 +69,8 @@ $klein->respond('GET', '/post/get/[:id]', function (...$args) use ($callControll
     return $callController('SevereHeadache\\OtusHa\\Controllers\\PostController::get', ...$args);
 });
 
+$klein->respond('GET', '/post/feed', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\PostController::feed', ...$args);
+});
+
 $klein->dispatch();

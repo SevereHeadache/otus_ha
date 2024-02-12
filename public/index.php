@@ -73,4 +73,12 @@ $klein->respond('GET', '/post/feed', function (...$args) use ($callController) {
     return $callController('SevereHeadache\\OtusHa\\Controllers\\PostController::feed', ...$args);
 });
 
+$klein->respond('POST', '/dialog/[:user_id]/send', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\DialogController::send', ...$args);
+});
+
+$klein->respond('GET', '/dialog/[:user_id]/list', function (...$args) use ($callController) {
+    return $callController('SevereHeadache\\OtusHa\\Controllers\\DialogController::list', ...$args);
+});
+
 $klein->dispatch();

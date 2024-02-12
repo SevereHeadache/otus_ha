@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "325e8ee8-0931-49b4-a59c-57cd476d2547",
+		"_postman_id": "71c7c5ed-fe15-4254-9069-8dd6781d5739",
 		"name": "otus_ha",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "15485188"
+		"_exporter_id": "29513074"
 	},
 	"item": [
 		{
@@ -313,6 +313,61 @@
 					}
 				},
 				"url": "http://0.0.0.0:8888/post/delete/66526f93-8581-4cd6-bbfb-3156f12d2306"
+			},
+			"response": []
+		},
+		{
+			"name": "Feed",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "677373dc-1566-4717-825a-d0bf0af5efe4",
+						"type": "text"
+					}
+				],
+				"url": "http://0.0.0.0:8888/post/feed"
+			},
+			"response": []
+		},
+		{
+			"name": "Dialog/Send message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "677373dc-1566-4717-825a-d0bf0af5efe4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "text",
+							"value": "message",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://0.0.0.0:8888/dialog/3b6a18e2-bcea-4824-9078-4bc2fba8af22/send"
+			},
+			"response": []
+		},
+		{
+			"name": "Dialog/List messages",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Auth-Token",
+						"value": "677373dc-1566-4717-825a-d0bf0af5efe4",
+						"type": "text"
+					}
+				],
+				"url": "http://0.0.0.0:8888/dialog/3b6a18e2-bcea-4824-9078-4bc2fba8af22/list"
 			},
 			"response": []
 		}

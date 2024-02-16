@@ -52,6 +52,15 @@ services:
         command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
         networks:
             - internal
+    rabbitmq:
+        container_name: rabbitmq
+        build: ./.docker/rabbitmq
+        ports:
+          - ${RMQ_PORT}:15672
+          - ${ARMQ_PORT}:5672
+        networks:
+          - internal
+        restart: unless-stopped
 
 networks:
   internal:

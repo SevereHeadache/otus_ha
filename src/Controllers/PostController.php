@@ -7,6 +7,7 @@ use Klein\Response;
 use Klein\Request;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use SevereHeadache\OtusHa\Components\RedisClient;
+use SevereHeadache\OtusHa\Components\RMQClient;
 use SevereHeadache\OtusHa\Controllers\Exceptions\AuthenticationException;
 use SevereHeadache\OtusHa\Controllers\Exceptions\IncorectRequestException;
 use SevereHeadache\OtusHa\Models\Friend;
@@ -39,7 +40,17 @@ class PostController
 
         $repository = new PostRepository();
         try{
-            $repository->store($post);
+            $post = $repository->store($post);
+            $friendRepository = new FriendRepository();
+            $authorFriends = $friendRepository->getAll([
+                ['friend_id', '=', $post->authorUserId]
+            ]);
+            if (!empty($authorFriends)) {
+                $rmqClient = new RMQClient();
+                foreach($authorFriends as $friend) {
+                    $rmqClient->push('user-posts', $friend->userId, $post);
+                }
+            }
         } catch(RepositoryException $e) {
             throw new IncorectRequestException($e->getMessage(), 404);
         }
@@ -72,7 +83,7 @@ class PostController
         
         $post->text = $attributes['text'];
         try{
-            $repository->store($post);
+            $post = $repository->store($post);
         } catch(RepositoryException $e) {
             throw new IncorectRequestException($e->getMessage(), 404);
         }

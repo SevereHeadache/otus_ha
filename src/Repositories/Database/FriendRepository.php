@@ -2,6 +2,7 @@
 
 namespace SevereHeadache\OtusHa\Repositories\Database;
 
+use PDO;
 use SevereHeadache\OtusHa\Models\Friend;
 
 /**
@@ -43,5 +44,34 @@ class FriendRepository extends AbstractRepository
     protected function update(Friend $friend): Friend
     {
         return $this->updateModel($friend);
+    }
+
+    /**
+     * @todo make queryBuider
+     */
+    public function getAll(array $where): array 
+    {
+        $result = [];
+
+        $query = sprintf('SELECT * FROM %s', static::$tableName);
+        $params = [];
+        foreach($where as $i => $whereItem) {
+            if ($i == 0) {
+                $query .= ' WHERE ';
+            } else {
+                $query .= ' AND ';
+            }
+            list($column, $operator, $value) = $whereItem;
+            $paramName = ':'.$column;
+            $query .= sprintf('%s %s %s', $column, $operator, $paramName);
+            $params[$paramName] = $value;
+        }
+        $query .= ' ORDER BY id ASC';
+        $request = $this->getConnection(slave: true)->prepare($query);
+        $request->execute($params);
+        $friends = $request->fetchAll(PDO::FETCH_CLASS, Friend::class); 
+        $result = array_map([$this, 'parseValues'], $friends);
+
+        return $result;
     }
 }

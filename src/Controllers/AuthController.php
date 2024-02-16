@@ -5,6 +5,7 @@ namespace SevereHeadache\OtusHa\Controllers;
 use Carbon\Carbon;
 use Klein\Response;
 use Klein\Request;
+use SevereHeadache\OtusHa\Controllers\Exceptions\AuthenticationException;
 use SevereHeadache\OtusHa\Controllers\Exceptions\IncorectRequestException;
 use SevereHeadache\OtusHa\Models\User;
 use SevereHeadache\OtusHa\Repositories\Database\TokenRepository;
@@ -87,5 +88,33 @@ class AuthController
         $user = $repository->store($user);
 
         return $response->json((object) ['user_id' => $user->id]); 
+    }
+
+    public function me(Request $request, Response $response)
+    {
+        if(!($token = $request->headers()['Auth-Token'])){
+            throw new AuthenticationException('Not specified AUTH_TOKEN header');
+        }
+
+        $tokenRepository = new TokenRepository();
+        try{
+            $token = $tokenRepository->get($token);
+        } catch(RepositoryException $e) {
+            throw new AuthenticationException();
+        }
+
+        $userId = $token->userId;
+        
+        $repository = new UserRepository();
+        try {
+            $user = $repository->get($userId);
+        } catch (RepositoryException $e){
+            return $response->json([
+                'code' => 404,
+                'message' => 'Undefined user',
+            ]);
+        }
+
+        return $response->json($user);
     }
 }
